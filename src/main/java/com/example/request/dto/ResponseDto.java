@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
@@ -17,4 +19,5 @@ public class ResponseDto {
     private String description;
     private String requesterName;
     private Status status;
+    private LocalDateTime createdAt;
 }

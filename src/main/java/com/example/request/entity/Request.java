@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -23,6 +24,7 @@ public class Request {
     private String description;
     private String requesterName;
     private Status status;
+    private LocalDateTime createdAt;
 
     @OneToMany(mappedBy = "request", cascade = CascadeType.ALL)
     private List<ApprovalStep> steps;

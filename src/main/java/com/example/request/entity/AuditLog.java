@@ -22,8 +22,8 @@ public class AuditLog {
     private Long id;
 
     private String name;
-    private enum status{DRAFT, SUBMITTED, PENDING, APPROVED, REJECTED};
+    private Status status;
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
-    private enum role{MANAGER, HR, FINANCE};
+    private Roles role;
 }

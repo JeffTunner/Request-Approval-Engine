@@ -23,7 +23,7 @@ public class ApprovalStep {
     @JsonIgnore
     private Request request;
 
-    private enum role{MANAGER, HR, FINANCE};
+    private Roles role;
     private Long order;
-    private enum status{PENDING, APPROVED, REJECTED};
+    private Status status;
 }

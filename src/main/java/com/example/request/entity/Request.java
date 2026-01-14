@@ -22,7 +22,7 @@ public class Request {
     private String title;
     private String description;
     private String requesterName;
-    private enum status {DRAFT, SUBMITTED, APPROVED, REJECTED};
+    private Status status;
 
     @OneToMany(mappedBy = "request", cascade = CascadeType.ALL)
     private List<ApprovalStep> steps;

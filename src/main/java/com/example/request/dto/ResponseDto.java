@@ -1,5 +1,6 @@
 package com.example.request.dto;
 
+import com.example.request.entity.Status;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,5 +16,5 @@ public class ResponseDto {
     private String title;
     private String description;
     private String requesterName;
-    private enum status {DRAFT, SUBMITTED, APPROVED, REJECTED};
+    private Status status;
 }

@@ -24,6 +24,6 @@ public class ApprovalStep {
     private Request request;
 
     private Roles role;
-    private Long order;
+    private int approvalOrder;
     private Status status;
 }

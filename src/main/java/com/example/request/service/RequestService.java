@@ -2,8 +2,7 @@ package com.example.request.service;
 
 import com.example.request.dto.RequestDto;
 import com.example.request.dto.ResponseDto;
-import com.example.request.entity.AuditLog;
-import com.example.request.entity.Request;
+import com.example.request.entity.*;
 import com.example.request.repository.ApprovalRepository;
 import com.example.request.repository.AuditLogRepository;
 import com.example.request.repository.RequestRepository;
@@ -11,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import static com.example.request.entity.Status.DRAFT;
 import static com.example.request.entity.Status.SUBMITTED;
@@ -64,6 +64,30 @@ public class RequestService {
         auditLog.setCreatedAt(request.getCreatedAt());
         auditLog.setModifiedAt(LocalDateTime.now());
         logRepository.save(auditLog);
+        ApprovalStep approvalStep = new ApprovalStep();
+        approvalStep.setRequest(request);
+        approvalStep.setRole(Roles.MANAGER);
+        approvalStep.setStatus(Status.PENDING);
+        approvalStep.setApprovalOrder(0);
+        approvalRepository.save(approvalStep);
+        ApprovalStep approvalStep1 = new ApprovalStep();
+        approvalStep1.setRequest(request);
+        approvalStep1.setRole(Roles.HR);
+        approvalStep1.setStatus(Status.PENDING);
+        approvalStep1.setApprovalOrder(1);
+        approvalRepository.save(approvalStep1);
+        ApprovalStep approvalStep2 = new ApprovalStep();
+        approvalStep2.setRequest(request);
+        approvalStep2.setRole(Roles.FINANCE);
+        approvalStep2.setStatus(Status.PENDING);
+        approvalStep2.setApprovalOrder(2);
+        approvalRepository.save(approvalStep2);
         return toDto(request);
+    }
+
+    public List<AuditLog> timeline(Long id) {
+        Request request = requestRepository.findById(id).orElseThrow(() -> new RuntimeException("No Request"));
+        String name = request.getRequesterName();
+        return logRepository.findByNameIgnoreCase(name);
     }
 }

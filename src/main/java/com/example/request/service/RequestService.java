@@ -47,6 +47,7 @@ public class RequestService {
         request.setCreatedAt(LocalDateTime.now());
         Request saved = requestRepository.save(request);
         AuditLog auditLog = new AuditLog();
+        auditLog.setRequestId(request.getId());
         auditLog.setName(requestDto.getRequesterName());
         auditLog.setStatus(DRAFT);
         auditLog.setCreatedAt(LocalDateTime.now());
@@ -57,8 +58,13 @@ public class RequestService {
 
     public ResponseDto submitRequest(Long id) {
         Request request = requestRepository.findById(id).orElseThrow(() -> new RuntimeException("Request with id: " +id + " not found!"));
+        if(request.getStatus() != DRAFT) {
+            throw new IllegalStateException("Only drafts can be submitted!");
+        }
         request.setStatus(SUBMITTED);
+        requestRepository.save(request);
         AuditLog auditLog = new AuditLog();
+        auditLog.setRequestId(request.getId());
         auditLog.setName(request.getRequesterName());
         auditLog.setStatus(SUBMITTED);
         auditLog.setCreatedAt(request.getCreatedAt());
@@ -86,8 +92,6 @@ public class RequestService {
     }
 
     public List<AuditLog> timeline(Long id) {
-        Request request = requestRepository.findById(id).orElseThrow(() -> new RuntimeException("No Request"));
-        String name = request.getRequesterName();
-        return logRepository.findByNameIgnoreCase(name);
+        return logRepository.findByRequestId(id);
     }
 }

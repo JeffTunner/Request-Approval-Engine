@@ -26,4 +26,5 @@ public class AuditLog {
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
     private Roles role;
+    private Long requestId;
 }

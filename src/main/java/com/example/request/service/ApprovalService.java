@@ -28,6 +28,9 @@ public class ApprovalService {
         if(request.getStatus() == Status.REJECTED) {
             throw new IllegalStateException("Request already Rejected");
         }
+        if(request.getStatus() == Status.APPROVED) {
+            throw new IllegalStateException("Request Already Approved!");
+        }
         if(approvalStep.getStatus() != Status.PENDING) {
             throw new IllegalStateException("Step already processed");
         }
@@ -44,6 +47,7 @@ public class ApprovalService {
             requestRepository.save(request);
         }
         AuditLog auditLog = new AuditLog();
+        auditLog.setRequestId(request.getId());
         auditLog.setModifiedAt(LocalDateTime.now());
         auditLog.setName(request.getRequesterName());
         auditLog.setCreatedAt(request.getCreatedAt());
@@ -62,9 +66,12 @@ public class ApprovalService {
         if(request.getStatus() == Status.REJECTED) {
             throw new IllegalStateException("Cannot reject again, already Rejected!");
         }
+        approvalStep.setStatus(Status.REJECTED);
+        approvalRepository.save(approvalStep);
         request.setStatus(Status.REJECTED);
         requestRepository.save(request);
         AuditLog auditLog = new AuditLog();
+        auditLog.setRequestId(request.getId());
         auditLog.setModifiedAt(LocalDateTime.now());
         auditLog.setName(request.getRequesterName());
         auditLog.setCreatedAt(request.getCreatedAt());
